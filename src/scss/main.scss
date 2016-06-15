@@ -4,6 +4,14 @@ body {
   background-color: $main-bg-color;
 }
 
+.gameboard {
+  border: 1px solid $border-color;
+}
+
+.row {
+  margin: 0;
+}
+
 .square {
   height: 20px;
   width: 20px;
@@ -11,6 +19,7 @@ body {
   border-style: solid;
   border-radius: 3px;
   border-width: 1px;
+  display: inline-block;
 
   &.on {
     background-color: $on-color;

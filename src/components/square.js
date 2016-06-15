@@ -10,7 +10,7 @@ class Square extends Component {
         'square': true,
         [`${this.props.activestate}`]: true
       });
-      return (<div className={squareClasses}></div>);
+      return (<span className={squareClasses} key={this.props.squareNum}></span>);
     }
 }
 

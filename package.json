@@ -20,6 +20,7 @@
     "browserify": "^13.0.1",
     "classnames": "^2.2.5",
     "eslint-friendly-formatter": "^2.0.5",
+    "eslint-plugin-babel": "^3.2.0",
     "eslint-plugin-react": "^5.1.1",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
