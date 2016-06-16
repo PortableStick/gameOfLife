@@ -13,8 +13,8 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            width: 70,
-            height: 50,
+            width: 40,
+            height: 40,
             gamespeed: speedKey['MEDIUM']
         }
         this.state.board = this.clearCells();
@@ -50,14 +50,17 @@ class App extends Component {
             }
           });
           let newSquare = {x: currentSquare.x, y: currentSquare.y, activestate:""};
+
           if(neighborCount === 3 && currentSquare.activestate === "off") {
             newSquare.activestate = "on";
           } else if(neighborCount < 2) {
             newSquare.activestate = "off";
           } else if(neighborCount >= 4) {
             newSquare.activestate = "off";
-          } else {
+          } else if(currentSquare.activestate === "on"){
             newSquare.activestate = "on";
+          } else {
+            newSquare.activestate = currentSquare.activestate;
           }
           copyOfBoard[i][j] = newSquare;
         } //for-j
