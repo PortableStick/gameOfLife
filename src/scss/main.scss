@@ -5,24 +5,28 @@ body {
 }
 
 .gameboard {
-  border: 1px solid $border-color;
+  border: 1px solid $gameboard-border-color;
+  display: inline-block;
+  box-sizing: content-box;
+  padding: 20px;
   line-height: 0;
-  width: 550px
+}
+
+.container {
+  text-align: center;
 }
 
 .row {
-  clear: right;
-  float: left;
   margin: 0;
 }
 
 .square {
-  border-color: $border-color;
+  border-color: $square-border-color;
   border-style: solid;
   border-width: 1px;
+  display: inline-block;
   height: 11px;
   width: 11px;
-  display: inline-block;
 
   &.on {
     background-color: $on-color;
@@ -34,8 +38,3 @@ body {
 
 }
 
-.clearfix:after {
-  content:"";
-  clear:both;
-  display:block;
-}

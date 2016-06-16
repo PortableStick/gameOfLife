@@ -6,8 +6,8 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            width: 50,
-            height: 70
+            width: 40,
+            height: 30
         }
         this.state.board = this.randomizeCells();
     }
