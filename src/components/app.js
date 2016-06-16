@@ -9,7 +9,7 @@ class App extends Component {
             width: 50,
             height: 70
         }
-        this.board = this.randomizeCells();
+        this.state.board = this.randomizeCells();
     }
 
     randomizeCells() {
@@ -33,9 +33,7 @@ class App extends Component {
 
     render() {
         return ( < div className = "container" >
-            < Gameboard board = { this.board }
-            width = { this.state.width }
-            height = { this.state.height }
+            < Gameboard board = { this.state.board }
             toggle = { this.toggleActiveState }
             /> < /div>
         );

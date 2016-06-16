@@ -18,7 +18,7 @@ class GameBoard extends Component {
 
     render() {
       return (
-        <div className="gameboard">
+        <div className="gameboard clearfix">
           {this.boardSquares}
         </div>)
     }
