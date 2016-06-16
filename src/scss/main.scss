@@ -5,19 +5,20 @@ body {
 }
 
 .gameboard {
+  line-height: 0;
   border: 1px solid $border-color;
 }
 
 .row {
+  display: inline-block;
   margin: 0;
 }
 
 .square {
-  height: 20px;
-  width: 20px;
+  height: 11px;
+  width: 11px;
   border-color: $border-color;
   border-style: solid;
-  border-radius: 3px;
   border-width: 1px;
   display: inline-block;
 

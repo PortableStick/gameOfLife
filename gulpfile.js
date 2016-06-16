@@ -62,6 +62,7 @@ gulp.task('html', () => {
 });
 
 gulp.task('js', () => {
+    process.env.NODE_ENV = 'production';
     browserify(config.paths.mainJs, {debug: true})
         .transform(babelify,{
             presets: ["es2015", "react"],

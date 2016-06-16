@@ -11,7 +11,6 @@ class Square extends Component {
 
     toggleActive(event) {
       event.stopPropagation();
-      this.props.toggle(this.props.squareNum);
       this.setState({
         activestate: this.state.activestate === "on" ? "off" : "on"
       })

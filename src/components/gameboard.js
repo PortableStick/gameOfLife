@@ -1,21 +1,25 @@
 import React, {Component, PropTypes} from 'react';
-import Square from './square.js';
+import Row from './row.js';
 
 class GameBoard extends Component {
 
     constructor(props) {
       super(props);
+      this.boardSquares = this.setupGameBoard();
     }
 
-    static propTypes = {
-      width: PropTypes.number.isRequired,
-      height: PropTypes.number.isRequired,
-      board: PropTypes.array.isRequired
+    setupGameBoard() {
+      let boardSquares = [];
+      this.props.board.forEach((row, i) => {
+        boardSquares.push(<Row rowData={row} toggle={this.props.toggle} key={i}/>)
+      });
+      return boardSquares;
     }
 
     render() {
       return (
         <div className="gameboard">
+          {this.boardSquares}
         </div>)
     }
 }
