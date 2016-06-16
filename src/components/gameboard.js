@@ -1,25 +1,41 @@
 import React, {Component, PropTypes} from 'react';
-import Row from './row.js';
+import Square from './square.js';
 
 class GameBoard extends Component {
 
     constructor(props) {
       super(props);
-      this.boardSquares = this.setupGameBoard();
+      this.state = {
+        boardSquares: this.setupGameBoard(props.board)
+      };
     }
 
-    setupGameBoard() {
+    setupGameBoard(board) {
+
       let boardSquares = [];
-      this.props.board.forEach((row, i) => {
-        boardSquares.push(<Row rowData={row} toggle={this.props.toggle} key={i}/>)
-      });
+        board.forEach(row => {
+          row.forEach(square => {
+            boardSquares.push(<Square x={square.x} y={square.y} activestate={square.activestate} />)
+          })
+          boardSquares.push(<br />);
+        })
       return boardSquares;
+    }
+
+    componentWillReceiveProps(nextProps) {
+      this.setState({
+        boardSquares: this.setupGameBoard(nextProps.board)
+      });
+    }
+
+    shouldComponentUpdate() {
+      return true;
     }
 
     render() {
       return (
         <div className="gameboard clearfix">
-          {this.boardSquares}
+          {this.state.boardSquares}
         </div>)
     }
 }

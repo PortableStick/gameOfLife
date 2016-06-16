@@ -9,19 +9,19 @@ class Square extends Component {
       };
     }
 
-    toggleActive(event) {
-      event.stopPropagation();
-      this.setState({
-        activestate: this.state.activestate === "on" ? "off" : "on"
-      })
+    shouldComponentUpdate(nextProps, nextState) {
+      if(nextProps.activestate === this.props.activestate) {
+        return true;
+      }
+      return false;
     }
 
     render() {
       var squareClasses = classnames({
         'square': true,
-        [`${this.state.activestate}`]: true
+        [`${this.props.activestate}`]: true
       });
-      return (<span className={squareClasses} key={this.props.squareNum} onClick={this.toggleActive.bind(this)}></span>);
+      return (<div className={squareClasses} key={this.props.squareNum}></div>);
     }
 }
 
