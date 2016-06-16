@@ -17,11 +17,11 @@ class App extends Component {
             height: 50,
             gamespeed: speedKey['MEDIUM']
         }
-        this.state.board = this.randomizeCells();
+        this.state.board = this.clearCells();
     }
 
     interval = 0;
-    isRunning = true;
+    isRunning = false;
 
     lifeCycle() {
       let board = this.state.board,
@@ -68,7 +68,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-      this.interval = setInterval(this.lifeCycle.bind(this), this.state.gamespeed);
+      // this.interval = setInterval(this.lifeCycle.bind(this), this.state.gamespeed);
     }
 
     randomizeCells() {
@@ -77,6 +77,25 @@ class App extends Component {
                 x: x,
                 y: y,
                 activestate: (Math.random() * 10) < 1 ? "on" : "off"
+            }
+        }
+        let boardData = [];
+        for (let i = 0; i < this.state.height; i++) {
+            let subarray = [];
+            for (let j = 0; j < this.state.width; j++) {
+                subarray.push(cellData(j, i));
+            }
+            boardData.push(subarray);
+        }
+        return boardData;
+    }
+
+    clearCells() {
+      function cellData(x, y) {
+            return {
+                x: x,
+                y: y,
+                activestate: "off"
             }
         }
         let boardData = [];
@@ -112,12 +131,33 @@ class App extends Component {
       this.isRunning = true;
     }
 
+    clear() {
+      clearInterval(this.interval);
+      this.isRunning = false;
+      this.setState({
+        board: this.clearCells()
+      });
+    }
+
+    manualInput(x, y, activestate) {
+      let board = this.state.board;
+      board[y][x] = {
+        x: x,
+        y: y,
+        activestate: activestate
+      };
+      this.setState({
+        board: board
+      })
+      this.forceUpdate();
+    }
+
     render() {
         return (
           <div className = "container" >
-            <Controller pause={this.pause.bind(this)} randomize={this.randomize.bind(this)} pauseLabel={this.isRunning ? "Pause" : "Start"} />
+            <Controller pause={this.pause.bind(this)} randomize={this.randomize.bind(this)} clear={this.clear.bind(this)} pauseLabel={this.isRunning ? "Pause" : "Start"} />
             <Gameboard board = { this.state.board }
-            toggle = { this.toggleActiveState } />
+            toggle = { this.manualInput.bind(this) } />
           </div>
         );
     }

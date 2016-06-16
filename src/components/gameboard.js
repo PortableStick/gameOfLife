@@ -15,7 +15,7 @@ class GameBoard extends Component {
       let boardSquares = [];
         board.forEach(row => {
           row.forEach(square => {
-            boardSquares.push(<Square x={square.x} y={square.y} activestate={square.activestate} />)
+            boardSquares.push(<Square x={square.x} y={square.y} activestate={square.activestate} toggle={this.props.toggle} />)
           })
           boardSquares.push(<br />);
         })
@@ -23,6 +23,7 @@ class GameBoard extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+      console.log("Updating")
       this.setState({
         boardSquares: this.setupGameBoard(nextProps.board)
       });

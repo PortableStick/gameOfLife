@@ -27,7 +27,7 @@ body {
   display: inline-block;
   height: 11px;
   width: 11px;
-
+  margin: 0;
   &.on {
     background-color: $on-color;
   }

@@ -4,16 +4,23 @@ import classnames from 'classnames';
 class Square extends Component {
     constructor(props) {
       super(props);
-      this.state = {
-        activestate: this.props.activestate
-      };
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-      if(nextProps.activestate === this.props.activestate) {
+      if(nextProps.activestate !== this.props.activestate) {
         return true;
       }
       return false;
+    }
+
+    // componentWillReceiveProps(nextProps) {
+    //   console.log("Updating square", this.props.x, this.props.y);
+
+    // }
+
+    switchState() {
+      let newState = this.props.activestate === "on" ? "off" : "on";
+      this.props.toggle(this.props.x, this.props.y, newState);
     }
 
     render() {
@@ -21,7 +28,7 @@ class Square extends Component {
         'square': true,
         [`${this.props.activestate}`]: true
       });
-      return (<div className={squareClasses} key={this.props.squareNum}></div>);
+      return (<div className={squareClasses} key={this.props.squareNum} onClick={this.switchState.bind(this)}></div>);
     }
 }
 
