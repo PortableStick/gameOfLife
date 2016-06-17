@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import Gameboard from './gameboard.js';
 import Controller from './controller.js';
+import Controls from './controls.js';
 
 const speedKey = {
-  'FAST': 200,
-  'MEDIUM': 500,
-  'SLOW': 1000
+  'FAST': 50,
+  'MEDIUM': 110,
+  'SLOW': 200
 }
 
 class App extends Component {
@@ -13,18 +14,20 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            width: 40,
-            height: 40,
-            gamespeed: speedKey['MEDIUM']
+            width: 70,
+            height: 50,
+            gamespeed: speedKey['FAST']
         }
-        this.state.board = this.clearCells();
+        this.board = this.populateSquares();
     }
 
     interval = 0;
     isRunning = false;
+    generation = 0;
+    squares = [];
 
     lifeCycle() {
-      let board = this.state.board,
+      let board = this.board,
           copyOfBoard = [],
           height = this.state.height,
           width = this.state.width;
@@ -44,11 +47,13 @@ class App extends Component {
               neighbors = [neighborLeft, neighborRight, neighborUp, neighborDown, neighborTopLeft, neighborTopRight, neighborBottomLeft, neighborBottomRight],
               neighborCount = 0;
 
-          neighbors.forEach(neighbor => {
+          for(let i = 0; i < 8; i++) {
+            const neighbor = neighbors[i];
             if(neighbor && neighbor.activestate === "on") {
               neighborCount++;
             }
-          });
+          }
+
           let newSquare = {x: currentSquare.x, y: currentSquare.y, activestate:""};
 
           if(neighborCount === 3 && currentSquare.activestate === "off") {
@@ -57,43 +62,42 @@ class App extends Component {
             newSquare.activestate = "off";
           } else if(neighborCount >= 4) {
             newSquare.activestate = "off";
-          } else if(currentSquare.activestate === "on"){
+          } else if(currentSquare.activestate === "on") {
             newSquare.activestate = "on";
           } else {
             newSquare.activestate = currentSquare.activestate;
           }
           copyOfBoard[i][j] = newSquare;
+          this.toggleActiveState(newSquare.x, newSquare.y, newSquare.activestate)
         } //for-j
       }//for-i
-      this.setState({
-        board: copyOfBoard
-      });
+      this.updateGeneration();
+      this.board = copyOfBoard;
     }
 
-    componentDidMount() {
-      // this.interval = setInterval(this.lifeCycle.bind(this), this.state.gamespeed);
+    updateGeneration(newGen) {
+      if(!arguments.length){this.generation++;}
+      else{this.generation = newGen;}
+      document.getElementById("counterNumber").innerHTML = this.generation;
     }
 
     randomizeCells() {
-        function cellData(x, y) {
-            return {
-                x: x,
-                y: y,
-                activestate: (Math.random() * 10) < 1 ? "on" : "off"
-            }
+
+      if(this.isRunning) {
+        clearInterval(this.interval);
+        this.isRunning = false;
+        document.getElementById("pauseButton").innerHTML = "Start";
+      }
+      for(let i = 0; i < this.state.height; i++) {
+        for(let j = 0; j < this.state.width; j++) {
+          let randomState = (Math.random() * 7) < 1 ? "on" : "off";
+          this.toggleActiveState(j, i, randomState);
         }
-        let boardData = [];
-        for (let i = 0; i < this.state.height; i++) {
-            let subarray = [];
-            for (let j = 0; j < this.state.width; j++) {
-                subarray.push(cellData(j, i));
-            }
-            boardData.push(subarray);
-        }
-        return boardData;
+      }
+      this.updateGeneration(0);
     }
 
-    clearCells() {
+    populateSquares() {
       function cellData(x, y) {
             return {
                 x: x,
@@ -112,55 +116,64 @@ class App extends Component {
         return boardData;
     }
 
+
+    clearSquares() {
+      if(this.isRunning) {
+        clearInterval(this.interval);
+        this.isRunning = false;
+        document.getElementById("pauseButton").innerHTML = "Start";
+      }
+      for(let i = 0; i < this.state.height; i++) {
+        for(let j = 0; j < this.state.width; j++) {
+          this.toggleActiveState(j, i, "off");
+        }
+      }
+      this.updateGeneration(0);
+    }
+
     pause() {
       if(this.isRunning) {
         clearInterval(this.interval);
         this.isRunning = false;
-        this.forceUpdate();
+        document.getElementById("pauseButton").innerHTML = "Start";
       } else {
         this.interval = setInterval(this.lifeCycle.bind(this), this.state.gamespeed);
         this.isRunning = true;
-        this.forceUpdate();
+        document.getElementById("pauseButton").innerHTML = "Pause";
       }
     }
 
     randomize() {
       clearInterval(this.interval);
       this.isRunning = false;
-      this.setState({
-        board: this.randomizeCells()
-      });
+      this.randomizeCells();
       this.interval = setInterval(this.lifeCycle.bind(this), this.state.gamespeed);
       this.isRunning = true;
+      document.getElementById("pauseButton").innerHTML = "Pause";
+      this.generation = 0;
     }
 
-    clear() {
-      clearInterval(this.interval);
-      this.isRunning = false;
-      this.setState({
-        board: this.clearCells()
-      });
+    toggleActiveState(x, y, activestate) {
+      let currentSquare = `${x} ${y}`;
+      this.board[y][x].activestate = activestate;
+      document.getElementById(currentSquare).className = `square ${activestate}`
     }
 
-    manualInput(x, y, activestate) {
-      let board = this.state.board;
-      board[y][x] = {
-        x: x,
-        y: y,
-        activestate: activestate
-      };
-      this.setState({
-        board: board
-      })
-      this.forceUpdate();
+    componentDidMount() {
+      if(this.isRunning) {
+        document.getElementById("pauseButton").innerHTML = "Pause";
+      } else {
+        document.getElementById("pauseButton").innerHTML = "Start";
+      }
     }
 
     render() {
         return (
           <div className = "container" >
-            <Controller pause={this.pause.bind(this)} randomize={this.randomize.bind(this)} clear={this.clear.bind(this)} pauseLabel={this.isRunning ? "Pause" : "Start"} />
-            <Gameboard board = { this.state.board }
-            toggle = { this.manualInput.bind(this) } />
+          <h1 className="title">Conway's Game of Life</h1>
+            <Controller pause={this.pause.bind(this)} randomize={this.randomize.bind(this)} clear={this.clearSquares.bind(this)} />
+            <Gameboard board = { this.board }
+            toggle = { this.toggleActiveState.bind(this) } />
           </div>
         );
     }

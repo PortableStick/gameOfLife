@@ -22,17 +22,6 @@ class GameBoard extends Component {
       return boardSquares;
     }
 
-    componentWillReceiveProps(nextProps) {
-      console.log("Updating")
-      this.setState({
-        boardSquares: this.setupGameBoard(nextProps.board)
-      });
-    }
-
-    shouldComponentUpdate() {
-      return true;
-    }
-
     render() {
       return (
         <div className="gameboard clearfix">

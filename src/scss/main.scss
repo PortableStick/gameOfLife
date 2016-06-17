@@ -1,40 +1,57 @@
 @import 'variables';
 
 body {
-  background-color: $main-bg-color;
+    background-color: $main-bg-color;
 }
 
 .gameboard {
-  border: 1px solid $gameboard-border-color;
-  display: inline-block;
-  box-sizing: content-box;
-  padding: 20px;
-  line-height: 0;
+    border: 1px solid $gameboard-border-color;
+    display: inline-block;
+    box-sizing: content-box;
+    padding: 20px;
+    line-height: 0;
+}
+
+.controls {
+  background-color: $controls-bg-color;
 }
 
 .container {
-  text-align: center;
+    margin-top: 5vh;
+    text-align: center;
 }
 
 .row {
-  margin: 0;
+    margin: 0;
+}
+
+.title {
+    color: $title-color;
+    margin: 0 0 10px;
+    padding: 0;
+}
+
+.counter {
+    color: $counter-color;
+    margin-left: 30px;
+    font-size: 1.6em;
 }
 
 .square {
-  border-color: $square-border-color;
-  border-style: solid;
-  border-width: 1px;
-  display: inline-block;
-  height: 11px;
-  width: 11px;
-  margin: 0;
-  &.on {
-    background-color: $on-color;
-  }
+    border-color: $square-border-color;
+    border-style: solid;
+    border-width: 1px;
+    display: inline-block;
+    height: 11px;
+    margin: 0;
+    width: 11px;
 
-  &.off {
-    background-color: $off-color;
-  }
-
+    &.on {
+        background-color: $on-color;
+        opacity: 1;
+    }
+    &.off {
+        background-color: $off-color;
+        opacity: 0.5;
+    }
 }
-
