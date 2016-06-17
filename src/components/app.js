@@ -6,7 +6,7 @@ import Controls from './controls.js';
 const speedKey = {
   'FAST': 50,
   'MEDIUM': 110,
-  'SLOW': 200
+  'SLOW': 10000
 }
 
 class App extends Component {
@@ -14,9 +14,9 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            width: 70,
-            height: 50,
-            gamespeed: speedKey['FAST']
+            width: 10,
+            height: 10,
+            gamespeed: speedKey['SLOW']
         }
         this.board = this.populateSquares();
     }
@@ -24,7 +24,6 @@ class App extends Component {
     interval = 0;
     isRunning = false;
     generation = 0;
-    squares = [];
 
     lifeCycle() {
       let board = this.board,
@@ -137,6 +136,7 @@ class App extends Component {
         this.isRunning = false;
         document.getElementById("pauseButton").innerHTML = "Start";
       } else {
+        this.lifeCycle();
         this.interval = setInterval(this.lifeCycle.bind(this), this.state.gamespeed);
         this.isRunning = true;
         document.getElementById("pauseButton").innerHTML = "Pause";
@@ -147,6 +147,7 @@ class App extends Component {
       clearInterval(this.interval);
       this.isRunning = false;
       this.randomizeCells();
+      this.lifeCycle.bind(this)
       this.interval = setInterval(this.lifeCycle.bind(this), this.state.gamespeed);
       this.isRunning = true;
       document.getElementById("pauseButton").innerHTML = "Pause";
@@ -165,6 +166,7 @@ class App extends Component {
       } else {
         document.getElementById("pauseButton").innerHTML = "Start";
       }
+
     }
 
     render() {
