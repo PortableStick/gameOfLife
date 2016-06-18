@@ -77,7 +77,7 @@ class App extends Component {
         this.generation = this.generation + 1;
         this.generationCounter.innerHTML = this.generation;
       } else {
-        this.generation = this.generationCounter = newGen;
+        this.generation = this.generationCounter.innerHTML = newGen;
       }
     }
 
@@ -135,9 +135,9 @@ class App extends Component {
       clearInterval(this.interval);
       this.isRunning = false;
       this.setState({
-        board: this.randomizeCells(),
-        generation: 0
+        board: this.randomizeCells()
       });
+      this.updateGeneration(0);
       this.interval = setInterval(this.lifeCycle.bind(this), this.state.gamespeed);
       this.isRunning = true;
     }
@@ -146,9 +146,9 @@ class App extends Component {
       clearInterval(this.interval);
       this.isRunning = false;
       this.setState({
-        board: this.clearCells(),
-        generation: 0
+        board: this.clearCells()
       });
+      this.updateGeneration(0);
     }
 
     manualInput(x, y, activestate) {
