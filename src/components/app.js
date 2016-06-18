@@ -3,30 +3,24 @@ import Gameboard from './gameboard.js';
 import Controller from './controller.js';
 import Controls from './controls.js';
 
-const speedKey = {
-  'FAST': 50,
-  'MEDIUM': 110,
-  'SLOW': 10000
-}
-
 class App extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            width: 10,
-            height: 10,
-            gamespeed: speedKey['SLOW']
+            width: 40,
+            height: 40,
+            gamespeed: 50,
+            generation: 0
         }
-        this.board = this.populateSquares();
+        this.state.board = this.clearCells();
     }
 
     interval = 0;
     isRunning = false;
-    generation = 0;
 
     lifeCycle() {
-      let board = this.board,
+      let board = this.state.board,
           copyOfBoard = [],
           height = this.state.height,
           width = this.state.width;
@@ -46,13 +40,12 @@ class App extends Component {
               neighbors = [neighborLeft, neighborRight, neighborUp, neighborDown, neighborTopLeft, neighborTopRight, neighborBottomLeft, neighborBottomRight],
               neighborCount = 0;
 
-          for(let i = 0; i < 8; i++) {
-            const neighbor = neighbors[i];
+          for(let k = 0; k < 8; k++) {
+            let neighbor = neighbors[k];
             if(neighbor && neighbor.activestate === "on") {
               neighborCount++;
             }
           }
-
           let newSquare = {x: currentSquare.x, y: currentSquare.y, activestate:""};
 
           if(neighborCount === 3 && currentSquare.activestate === "off") {
@@ -61,42 +54,42 @@ class App extends Component {
             newSquare.activestate = "off";
           } else if(neighborCount >= 4) {
             newSquare.activestate = "off";
-          } else if(currentSquare.activestate === "on") {
+          } else if(currentSquare.activestate === "on"){
             newSquare.activestate = "on";
           } else {
             newSquare.activestate = currentSquare.activestate;
           }
           copyOfBoard[i][j] = newSquare;
-          this.toggleActiveState(newSquare.x, newSquare.y, newSquare.activestate)
         } //for-j
       }//for-i
-      this.updateGeneration();
-      this.board = copyOfBoard;
-    }
-
-    updateGeneration(newGen) {
-      if(!arguments.length){this.generation++;}
-      else{this.generation = newGen;}
-      document.getElementById("counterNumber").innerHTML = this.generation;
+      this.setState((previousState) => {
+        return {
+          board: copyOfBoard,
+          generation: previousState.generation + 1
+        }
+      });
     }
 
     randomizeCells() {
-
-      if(this.isRunning) {
-        clearInterval(this.interval);
-        this.isRunning = false;
-        document.getElementById("pauseButton").innerHTML = "Start";
-      }
-      for(let i = 0; i < this.state.height; i++) {
-        for(let j = 0; j < this.state.width; j++) {
-          let randomState = (Math.random() * 7) < 1 ? "on" : "off";
-          this.toggleActiveState(j, i, randomState);
+        function cellData(x, y) {
+            return {
+                x: x,
+                y: y,
+                activestate: (Math.random() * 6) < 1 ? "on" : "off"
+            }
         }
-      }
-      this.updateGeneration(0);
+        let boardData = [];
+        for (let i = 0; i < this.state.height; i++) {
+            let subarray = [];
+            for (let j = 0; j < this.state.width; j++) {
+                subarray.push(cellData(j, i));
+            }
+            boardData.push(subarray);
+        }
+        return boardData;
     }
 
-    populateSquares() {
+    clearCells() {
       function cellData(x, y) {
             return {
                 x: x,
@@ -115,67 +108,68 @@ class App extends Component {
         return boardData;
     }
 
-
-    clearSquares() {
-      if(this.isRunning) {
-        clearInterval(this.interval);
-        this.isRunning = false;
-        document.getElementById("pauseButton").innerHTML = "Start";
-      }
-      for(let i = 0; i < this.state.height; i++) {
-        for(let j = 0; j < this.state.width; j++) {
-          this.toggleActiveState(j, i, "off");
-        }
-      }
-      this.updateGeneration(0);
-    }
-
     pause() {
       if(this.isRunning) {
         clearInterval(this.interval);
         this.isRunning = false;
-        document.getElementById("pauseButton").innerHTML = "Start";
+        this.forceUpdate();
       } else {
-        this.lifeCycle();
         this.interval = setInterval(this.lifeCycle.bind(this), this.state.gamespeed);
         this.isRunning = true;
-        document.getElementById("pauseButton").innerHTML = "Pause";
+        this.forceUpdate();
       }
     }
 
     randomize() {
       clearInterval(this.interval);
       this.isRunning = false;
-      this.randomizeCells();
-      this.lifeCycle.bind(this)
+      this.setState({
+        board: this.randomizeCells(),
+        generation: 0
+      });
       this.interval = setInterval(this.lifeCycle.bind(this), this.state.gamespeed);
       this.isRunning = true;
-      document.getElementById("pauseButton").innerHTML = "Pause";
-      this.generation = 0;
     }
 
-    toggleActiveState(x, y, activestate) {
-      let currentSquare = `${x} ${y}`;
-      this.board[y][x].activestate = activestate;
-      document.getElementById(currentSquare).className = `square ${activestate}`
+    clear() {
+      clearInterval(this.interval);
+      this.isRunning = false;
+      this.setState({
+        board: this.clearCells(),
+        generation: 0
+      });
     }
 
-    componentDidMount() {
+    manualInput(x, y, activestate) {
+      let board = this.state.board;
+      board[y][x] = {
+        x: x,
+        y: y,
+        activestate: activestate
+      };
+      this.setState({
+        board: board
+      })
+      this.forceUpdate();
+    }
+
+    setSpeed(event) {
+      this.setState({
+        gamespeed: event.target.value
+      });
+      clearInterval(this.interval);
       if(this.isRunning) {
-        document.getElementById("pauseButton").innerHTML = "Pause";
-      } else {
-        document.getElementById("pauseButton").innerHTML = "Start";
+        this.interval = setInterval(this.lifeCycle.bind(this), this.state.gamespeed);
       }
-
     }
 
     render() {
         return (
           <div className = "container" >
-          <h1 className="title">Conway's Game of Life</h1>
-            <Controller pause={this.pause.bind(this)} randomize={this.randomize.bind(this)} clear={this.clearSquares.bind(this)} />
-            <Gameboard board = { this.board }
-            toggle = { this.toggleActiveState.bind(this) } />
+            <Controller pause={this.pause.bind(this)} randomize={this.randomize.bind(this)} clear={this.clear.bind(this)} pauseLabel={this.isRunning ? "Pause" : "Start"} generation={this.state.generation}/>
+            <Gameboard board = { this.state.board }
+            toggle = { this.manualInput.bind(this) } />
+            <Controls setSpeed={this.setSpeed.bind(this)} value={this.gamespeed}/>
           </div>
         );
     }

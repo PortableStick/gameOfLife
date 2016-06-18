@@ -1,57 +1,132 @@
-@import 'variables';
+@import "variables";
 
 body {
-    background-color: $main-bg-color;
+  background-color: $main-bg-color;
 }
 
 .gameboard {
-    border: 1px solid $gameboard-border-color;
-    display: inline-block;
-    box-sizing: content-box;
-    padding: 20px;
-    line-height: 0;
+  border: 1px solid $gameboard-border-color;
+  background-color: $gameboard-bg-color;
+  box-sizing: content-box;
+  display: inline-block;
+  line-height: 0;
+  padding: 20px;
 }
 
-.controls {
-  background-color: $controls-bg-color;
+.speed {
+  width: 10%;
+  background-color: $speed-bg-color;
+  display: inline-block;
+  margin-top: 20px;
+  padding: 5px;
+
+  input {
+    -webkit-appearance: none;
+    margin: 18px 0;
+    width: 100%;
+
+    &:focus {
+      outline: none;
+    }
+
+    &::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 8.4px;
+      cursor: pointer;
+      box-shadow: 1px 1px 1px $track-shadow1, 0 0 1px $track-shadow2;
+      background: $track-bg-color;
+      border-radius: 1.3px;
+      border: 0.2px solid $track-border;
+    }
+
+    &::-webkit-slider-thumb {
+      box-shadow: 1px 1px 1px $thumb-shadow1, 0 0 1px thumb-shadow2;
+      border: 1px solid $thumb-border;
+      height: 20px;
+      width: 10px;
+      border-radius: 3px;
+      background: $thumb-color;
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -5px;
+    }
+
+    &:focus::-webkit-slider-runnable-track {
+      background: $track-focus-color;
+    }
+
+    &::-moz-range-track {
+      width: 100%;
+      height: 8.4px;
+      cursor: pointer;
+      box-shadow: 1px 1px 1px $track-shadow1, 0 0 1px $track-shadow2;
+      background: $track-bg-color;
+      border-radius: 1.3px;
+      border: 0.2px solid $track-border;
+    }
+
+    &::-moz-range-thumb {
+      box-shadow: 1px 1px 1px $track-shadow1, 0 0 1px $track-shadow2;
+      border: 1px solid $track-border;
+      height: 36px;
+      width: 16px;
+      border-radius: 3px;
+      background: $thumb-color;
+      cursor: pointer;
+    }
+  }
 }
 
 .container {
-    margin-top: 5vh;
-    text-align: center;
-}
-
-.row {
-    margin: 0;
-}
-
-.title {
-    color: $title-color;
-    margin: 0 0 10px;
-    padding: 0;
+  text-align: center;
+  margin-top: 10vh;
+  background-color: $container-bg;
 }
 
 .counter {
-    color: $counter-color;
-    margin-left: 30px;
-    font-size: 1.6em;
+  color: $counter-color;
+  font-size: 1.6em;
+}
+
+.row {
+  margin: 0;
 }
 
 .square {
-    border-color: $square-border-color;
-    border-style: solid;
-    border-width: 1px;
-    display: inline-block;
-    height: 11px;
-    margin: 0;
-    width: 11px;
+  border-color: $square-border-color;
+  border-style: solid;
+  border-width: 1px;
+  display: inline-block;
+  height: 11px;
+  width: 11px;
+  margin: 0;
 
-    &.on {
-        background-color: $on-color;
-        opacity: 1;
+  &.on {
+    background-color: $on-color;
+    opacity: 1;
+  }
+
+  &.off {
+    background-color: $off-color;
+    opacity: 0.5;
+  }
+}
+
+.controller {
+  .btn.btn-lg {
+    background-color: $btn-bg-color;
+    color: $btn-color;
+
+    &:hover {
+      background-color: $btn-hover-color;
     }
-    &.off {
-        background-color: $off-color;
-        opacity: 0.5;
+
+    &.Start {
+      background-color: $btn-start-color;
     }
+
+    &.Pause {
+      background-color: $btn-pause-color;
+    }
+  }
 }

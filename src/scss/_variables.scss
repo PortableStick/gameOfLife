@@ -1,9 +1,55 @@
-$on-color: yellow;
-$off-color: #000;
-$square-border-color: yellow;
-$gameboard-border-color: green;
-$counter-color: #fff;
-$title-color: #ddd;
-$controls-bg-color: #fff;
+/****Colors****/
 
-$main-bg-color: #000;
+$black: #222;
+$dark-shadow: opacify($black, 0.2);
+$dark-blue: #3071a9;
+$deep-blue: #367ebd;
+$white: #fff;
+
+$light-grey: #617564;
+$deep-green: #3E7546;
+$off-white: #CCF6D2;
+$pastel-green: #82F592;
+$green: #67C274;
+
+$dark-red: #C23903;
+$deep-red: #F51C2F;
+$red-grey: #7A6962;
+$light-green: #64F65A;
+$forest-green: #51C203;
+
+/****Assignments****/
+
+/*Gameboard*/
+
+$on-color: $deep-red;
+$off-color: $black;
+$square-border-color: $dark-red;
+$gameboard-border-color: $deep-red;
+$gameboard-bg-color: $red-grey;
+
+/*Controller*/
+$btn-bg-color: $red-grey;
+$btn-hover-color: lighten($btn-bg-color, 20%);
+$btn-start-color: $forest-green;
+$btn-pause-color: $dark-red;
+$counter-color: white;
+$btn-color: $white;
+
+/*Speed slider*/
+$speed-bg-color: $black;
+$track-shadow1: $red-grey;
+$track-shadow2: $white;
+$track-border: $forest-green;
+$track-bg-color: $forest-green;
+$track-focus-color: $deep-blue;
+$thumb-shadow1: $red-grey;
+$thumb-shadow2: $white;
+$thumb-border: $black;
+$thumb-color: $white;
+
+/*Main*/
+$container-bg: $black;
+$main-bg-color: $black;
+
+/****Sizing*****/

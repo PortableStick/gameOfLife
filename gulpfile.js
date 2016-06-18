@@ -8,7 +8,8 @@ const gulp = require('gulp'),
       lint = require('gulp-eslint'),
       sourcemaps = require('gulp-sourcemaps'),
       friendlyFormatter = require('eslint-friendly-formatter'), //export EFF_NO_GRAY=true in console if you can't see the output
-      sass = require('gulp-sass');
+      sass = require('gulp-sass'),
+      plumber = require('gulp-plumber');
 
 const config = {
     port: 9000,
@@ -86,6 +87,7 @@ gulp.task('css', () => {
 
 gulp.task('scss', () => {
     gulp.src(config.paths.scss)
+        .pipe(plumber())
         .pipe(sourcemaps.init())
         .pipe(sass())
         .pipe(concat('main.css'))
