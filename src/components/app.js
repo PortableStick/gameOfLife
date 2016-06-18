@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Gameboard from './gameboard.js';
+import Square from './square.js';
 import Controller from './controller.js';
 import Controls from './controls.js';
 
@@ -10,14 +10,15 @@ class App extends Component {
         this.state = {
             width: 40,
             height: 40,
-            gamespeed: 50,
-            generation: 0
+            gamespeed: 50
         }
         this.state.board = this.clearCells();
+        this.generation = 0;
     }
 
     interval = 0;
     isRunning = false;
+    boardView = [];
 
     lifeCycle() {
       let board = this.state.board,
@@ -60,14 +61,24 @@ class App extends Component {
             newSquare.activestate = currentSquare.activestate;
           }
           copyOfBoard[i][j] = newSquare;
+          this.updateSquare(j, i, newSquare.activestate);
         } //for-j
       }//for-i
+      this.updateGeneration();
       this.setState((previousState) => {
         return {
-          board: copyOfBoard,
-          generation: previousState.generation + 1
+          board: copyOfBoard
         }
       });
+    }
+
+    updateGeneration(newGen) {
+      if(!arguments.length) {
+        this.generation = this.generation + 1;
+        this.generationCounter.innerHTML = this.generation;
+      } else {
+        this.generation = this.generationCounter = newGen;
+      }
     }
 
     randomizeCells() {
@@ -150,6 +161,7 @@ class App extends Component {
       this.setState({
         board: board
       })
+      this.updateSquare(x, y, activestate);
       this.forceUpdate();
     }
 
@@ -163,12 +175,36 @@ class App extends Component {
       }
     }
 
+    setupGameBoard(board) {
+      let boardSquares = [];
+        board.forEach(row => {
+          row.forEach(square => {
+            boardSquares.push(<Square x={square.x} y={square.y} activestate={square.activestate} toggle={this.updateSquare.bind(this)}/>)
+          })
+          boardSquares.push(<br />);
+        })
+      return boardSquares;
+    }
+
+    updateSquare(x, y, activestate) {
+      document.getElementById(`${x} ${y}`).className = `square ${activestate}`;
+    }
+
+    componentWillMount() {
+      this.boardView = this.setupGameBoard(this.state.board);
+    }
+
+    componentDidMount() {
+      this.generationCounter = document.getElementById('generationCounter');
+    }
+
     render() {
         return (
           <div className = "container" >
-            <Controller pause={this.pause.bind(this)} randomize={this.randomize.bind(this)} clear={this.clear.bind(this)} pauseLabel={this.isRunning ? "Pause" : "Start"} generation={this.state.generation}/>
-            <Gameboard board = { this.state.board }
-            toggle = { this.manualInput.bind(this) } />
+            <Controller pause={this.pause.bind(this)} randomize={this.randomize.bind(this)} clear={this.clear.bind(this)} pauseLabel={this.isRunning ? "Pause" : "Start"}/>
+            <div className="gameboard">
+              {this.boardView}
+            </div>
             <Controls setSpeed={this.setSpeed.bind(this)} value={this.gamespeed}/>
           </div>
         );

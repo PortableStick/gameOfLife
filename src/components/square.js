@@ -28,7 +28,7 @@ class Square extends Component {
         'square': true,
         [`${this.props.activestate}`]: true
       });
-      return (<div className={squareClasses} key={this.props.squareNum} onClick={this.switchState.bind(this)}></div>);
+      return (<div className={squareClasses} id={`${this.props.x} ${this.props.y}`} key={this.props.squareNum} onClick={this.switchState.bind(this)}></div>);
     }
 }
 
