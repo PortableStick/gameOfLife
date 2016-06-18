@@ -11,7 +11,6 @@ class GameBoard extends Component {
     }
 
     setupGameBoard(board) {
-
       let boardSquares = [];
         board.forEach(row => {
           row.forEach(square => {

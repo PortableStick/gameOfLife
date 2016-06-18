@@ -6,7 +6,7 @@ class Controller extends Component {
       let pauseClasses = classnames({
         "btn": true,
         "btn-lg": true,
-        [`${this.props.pauseLabel}`]: true
+        [`${this.props.pauseLabel.toLowerCase()}`]: true
       });
 
       return(<div className="controller">

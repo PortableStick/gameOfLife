@@ -2,6 +2,7 @@
 
 body {
   background-color: $main-bg-color;
+  font-family: $vt323;
 }
 
 .gameboard {
@@ -13,70 +14,6 @@ body {
   padding: 20px;
 }
 
-.speed {
-  width: 10%;
-  background-color: $speed-bg-color;
-  display: inline-block;
-  margin-top: 20px;
-  padding: 5px;
-
-  input {
-    -webkit-appearance: none;
-    margin: 18px 0;
-    width: 100%;
-
-    &:focus {
-      outline: none;
-    }
-
-    &::-webkit-slider-runnable-track {
-      width: 100%;
-      height: 8.4px;
-      cursor: pointer;
-      box-shadow: 1px 1px 1px $track-shadow1, 0 0 1px $track-shadow2;
-      background: $track-bg-color;
-      border-radius: 1.3px;
-      border: 0.2px solid $track-border;
-    }
-
-    &::-webkit-slider-thumb {
-      box-shadow: 1px 1px 1px $thumb-shadow1, 0 0 1px thumb-shadow2;
-      border: 1px solid $thumb-border;
-      height: 20px;
-      width: 10px;
-      border-radius: 3px;
-      background: $thumb-color;
-      cursor: pointer;
-      -webkit-appearance: none;
-      margin-top: -5px;
-    }
-
-    &:focus::-webkit-slider-runnable-track {
-      background: $track-focus-color;
-    }
-
-    &::-moz-range-track {
-      width: 100%;
-      height: 8.4px;
-      cursor: pointer;
-      box-shadow: 1px 1px 1px $track-shadow1, 0 0 1px $track-shadow2;
-      background: $track-bg-color;
-      border-radius: 1.3px;
-      border: 0.2px solid $track-border;
-    }
-
-    &::-moz-range-thumb {
-      box-shadow: 1px 1px 1px $track-shadow1, 0 0 1px $track-shadow2;
-      border: 1px solid $track-border;
-      height: 36px;
-      width: 16px;
-      border-radius: 3px;
-      background: $thumb-color;
-      cursor: pointer;
-    }
-  }
-}
-
 .container {
   text-align: center;
   margin-top: 10vh;
@@ -85,7 +22,7 @@ body {
 
 .counter {
   color: $counter-color;
-  font-size: 1.6em;
+  font-size: 1.8em;
 }
 
 .row {
@@ -108,25 +45,115 @@ body {
 
   &.off {
     background-color: $off-color;
-    opacity: 0.5;
+    opacity: 0.2;
   }
 }
 
-.controller {
-  .btn.btn-lg {
-    background-color: $btn-bg-color;
-    color: $btn-color;
+.btn.btn-lg {
+  background-color: $btn-bg-color;
+  color: $btn-color;
+  font-size: 1.4em;
+  padding: 10px;
+
+  &:hover {
+    background-color: $btn-hover-color;
+  }
+
+  &.start {
+    background-color: $btn-start-color;
 
     &:hover {
-      background-color: $btn-hover-color;
+      background-color: darken($btn-start-color, 15%);
     }
+  }
 
-    &.Start {
-      background-color: $btn-start-color;
-    }
+  &.pause {
+    background-color: $btn-pause-color;
 
-    &.Pause {
-      background-color: $btn-pause-color;
+    &:hover {
+      background-color: darken($btn-pause-color, 15%);
     }
+  }
+}
+
+.controls {
+  .min-value,
+  .max-value {
+    color: $label-color;
+    font-size: 1.2em;
+  }
+
+  .min-value {
+    float: left;
+    transform: translateX(-5px);
+  }
+
+  .max-value {
+    float: right;
+    transform: translateX(10px);
+  }
+
+  .speed {
+    width: 10%;
+    background-color: $speed-bg-color;
+    display: inline-block;
+    margin-top: 20px;
+    padding: 5px;
+  }
+}
+
+input {
+  -webkit-appearance: none;
+  margin: 18px 0;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8.4px;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px $track-shadow1, 0 0 1px $track-shadow2;
+    background: $track-bg-color;
+    border-radius: 1.3px;
+    border: 0.2px solid $track-border;
+  }
+
+  &::-webkit-slider-thumb {
+    box-shadow: 1px 1px 1px $thumb-shadow1, 0 0 1px thumb-shadow2;
+    border: 1px solid $thumb-border;
+    height: 20px;
+    width: 10px;
+    border-radius: 3px;
+    background: $thumb-color;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -5px;
+  }
+
+  &:focus::-webkit-slider-runnable-track {
+    background: $track-focus-color;
+  }
+
+  &::-moz-range-track {
+    width: 100%;
+    height: 8.4px;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px $track-shadow1, 0 0 1px $track-shadow2;
+    background: $track-bg-color;
+    border-radius: 1.3px;
+    border: 0.2px solid $track-border;
+  }
+
+  &::-moz-range-thumb {
+    box-shadow: 1px 1px 1px $track-shadow1, 0 0 1px $track-shadow2;
+    border: 1px solid $track-border;
+    height: 36px;
+    width: 16px;
+    border-radius: 3px;
+    background: $thumb-color;
+    cursor: pointer;
   }
 }
