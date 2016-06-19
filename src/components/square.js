@@ -13,11 +13,6 @@ class Square extends Component {
       return false;
     }
 
-    // componentWillReceiveProps(nextProps) {
-    //   console.log("Updating square", this.props.x, this.props.y);
-
-    // }
-
     switchState() {
       let newState = this.props.activestate === "on" ? "off" : "on";
       this.props.toggle(this.props.x, this.props.y, newState);

@@ -61,14 +61,11 @@ class App extends Component {
             newSquare.activestate = currentSquare.activestate;
           }
           copyOfBoard[i][j] = newSquare;
-          this.updateSquare(j, i, newSquare.activestate);
         } //for-j
       }//for-i
       this.updateGeneration();
-      this.setState((previousState) => {
-        return {
-          board: copyOfBoard
-        }
+      this.setState({
+        board: copyOfBoard
       });
     }
 
@@ -161,7 +158,6 @@ class App extends Component {
       this.setState({
         board: board
       })
-      this.updateSquare(x, y, activestate);
       this.forceUpdate();
     }
 
@@ -179,15 +175,11 @@ class App extends Component {
       let boardSquares = [];
         board.forEach(row => {
           row.forEach(square => {
-            boardSquares.push(<Square x={square.x} y={square.y} activestate={square.activestate} toggle={this.updateSquare.bind(this)}/>)
+            boardSquares.push(<Square x={square.x} y={square.y} activestate={square.activestate}/>)
           })
           boardSquares.push(<br />);
         })
       return boardSquares;
-    }
-
-    updateSquare(x, y, activestate) {
-      document.getElementById(`${x} ${y}`).className = `square ${activestate}`;
     }
 
     componentWillMount() {
@@ -203,7 +195,13 @@ class App extends Component {
           <div className = "container" >
             <Controller pause={this.pause.bind(this)} randomize={this.randomize.bind(this)} clear={this.clear.bind(this)} pauseLabel={this.isRunning ? "Pause" : "Start"}/>
             <div className="gameboard">
-              {this.boardView}
+              {this.state.board.map(row => {
+                return (<div>
+                  {row.map(square => {
+                  return <Square x={square.x} y={square.y} activestate={square.activestate} toggle={this.manualInput.bind(this)}/>
+                  })}
+                  </div>)
+              })}
             </div>
             <Controls setSpeed={this.setSpeed.bind(this)} value={this.gamespeed}/>
           </div>
