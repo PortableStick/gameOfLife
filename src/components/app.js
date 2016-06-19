@@ -10,10 +10,10 @@ class App extends Component {
         this.state = {
             width: 40,
             height: 40,
-            gamespeed: 50
+            gamespeed: 50,
+            generation: 0
         }
         this.state.board = this.clearCells();
-        this.generation = 0;
     }
 
     interval = 0;
@@ -63,19 +63,12 @@ class App extends Component {
           copyOfBoard[i][j] = newSquare;
         } //for-j
       }//for-i
-      this.updateGeneration();
-      this.setState({
-        board: copyOfBoard
+      this.setState(previousState => {
+        return {
+          board: copyOfBoard,
+          generation: previousState.generation + 1
+        }
       });
-    }
-
-    updateGeneration(newGen) {
-      if(!arguments.length) {
-        this.generation = this.generation + 1;
-        this.generationCounter.innerHTML = this.generation;
-      } else {
-        this.generation = this.generationCounter.innerHTML = newGen;
-      }
     }
 
     randomizeCells() {
@@ -132,9 +125,9 @@ class App extends Component {
       clearInterval(this.interval);
       this.isRunning = false;
       this.setState({
-        board: this.randomizeCells()
+        board: this.randomizeCells(),
+        generation: 0
       });
-      this.updateGeneration(0);
       this.interval = setInterval(this.lifeCycle.bind(this), this.state.gamespeed);
       this.isRunning = true;
     }
@@ -143,9 +136,9 @@ class App extends Component {
       clearInterval(this.interval);
       this.isRunning = false;
       this.setState({
-        board: this.clearCells()
+        board: this.clearCells(),
+        generation: 0
       });
-      this.updateGeneration(0);
     }
 
     manualInput(x, y, activestate) {
@@ -157,7 +150,7 @@ class App extends Component {
       };
       this.setState({
         board: board
-      })
+      });
       this.forceUpdate();
     }
 
@@ -175,10 +168,10 @@ class App extends Component {
       let boardSquares = [];
         board.forEach(row => {
           row.forEach(square => {
-            boardSquares.push(<Square x={square.x} y={square.y} activestate={square.activestate}/>)
-          })
+            boardSquares.push(<Square x={square.x} y={square.y} activestate={square.activestate}/>);
+          });
           boardSquares.push(<br />);
-        })
+        });
       return boardSquares;
     }
 
@@ -186,20 +179,16 @@ class App extends Component {
       this.boardView = this.setupGameBoard(this.state.board);
     }
 
-    componentDidMount() {
-      this.generationCounter = document.getElementById('generationCounter');
-    }
-
     render() {
         return (
           <div className = "container" >
-            <Controller pause={this.pause.bind(this)} randomize={this.randomize.bind(this)} clear={this.clear.bind(this)} pauseLabel={this.isRunning ? "Pause" : "Start"}/>
+            <Controller pause={this.pause.bind(this)} randomize={this.randomize.bind(this)} clear={this.clear.bind(this)} pauseLabel={this.isRunning ? "Pause" : "Start"} generation={this.state.generation}/>
             <div className="gameboard">
               {this.state.board.map(row => {
                 return (<div>
                   {row.map(square => {
-                  return <Square x={square.x} y={square.y} activestate={square.activestate} toggle={this.manualInput.bind(this)}/>
-                  })}
+                    return <Square x={square.x} y={square.y} activestate={square.activestate} toggle={this.manualInput.bind(this)}/>
+                    })}
                   </div>)
               })}
             </div>

@@ -13,7 +13,7 @@ class Controller extends Component {
             <button className={pauseClasses} onClick={this.props.pause}>{this.props.pauseLabel}</button>
             <button className="btn btn-lg" onClick={this.props.clear}>Clear</button>
             <button className="btn btn-lg" onClick={this.props.randomize}>Randomize</button>
-            <div className="counter">Generation: <span className="counterNumber" id="generationCounter">0</span></div>
+            <div className="counter">Generation: <span className="counterNumber">{this.props.generation}</span></div>
         </div>);
     }
 }
