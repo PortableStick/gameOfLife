@@ -9,7 +9,7 @@ class App extends Component {
         super(props);
         this.state = {
             width: 40,
-            height: 40,
+            height: 50,
             gamespeed: 50,
             generation: 0
         }
@@ -90,6 +90,17 @@ class App extends Component {
         return boardData;
     }
 
+    randomize() {
+      clearInterval(this.interval);
+      this.isRunning = false;
+      this.setState({
+        board: this.randomizeCells(),
+        generation: 0
+      });
+      this.interval = setInterval(this.lifeCycle.bind(this), this.state.gamespeed);
+      this.isRunning = true;
+    }
+
     clearCells() {
       function cellData(x, y) {
             return {
@@ -109,6 +120,15 @@ class App extends Component {
         return boardData;
     }
 
+    clear() {
+      clearInterval(this.interval);
+      this.isRunning = false;
+      this.setState({
+        board: this.clearCells(),
+        generation: 0
+      });
+    }
+
     pause() {
       if(this.isRunning) {
         clearInterval(this.interval);
@@ -119,26 +139,6 @@ class App extends Component {
         this.isRunning = true;
         this.forceUpdate();
       }
-    }
-
-    randomize() {
-      clearInterval(this.interval);
-      this.isRunning = false;
-      this.setState({
-        board: this.randomizeCells(),
-        generation: 0
-      });
-      this.interval = setInterval(this.lifeCycle.bind(this), this.state.gamespeed);
-      this.isRunning = true;
-    }
-
-    clear() {
-      clearInterval(this.interval);
-      this.isRunning = false;
-      this.setState({
-        board: this.clearCells(),
-        generation: 0
-      });
     }
 
     manualInput(x, y, activestate) {
@@ -158,8 +158,8 @@ class App extends Component {
       this.setState({
         gamespeed: event.target.value
       });
-      clearInterval(this.interval);
       if(this.isRunning) {
+        clearInterval(this.interval);
         this.interval = setInterval(this.lifeCycle.bind(this), this.state.gamespeed);
       }
     }
@@ -181,7 +181,7 @@ class App extends Component {
 
     render() {
         return (
-          <div className = "container" >
+          <div className = "container">
             <Controller pause={this.pause.bind(this)} randomize={this.randomize.bind(this)} clear={this.clear.bind(this)} pauseLabel={this.isRunning ? "Pause" : "Start"} generation={this.state.generation}/>
             <div className="gameboard">
               {this.state.board.map(row => {

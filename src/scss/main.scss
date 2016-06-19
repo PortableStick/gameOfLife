@@ -1,8 +1,22 @@
 @import "variables";
 
+@keyframes color-flash {
+  0% {
+    background-color: invert($on-color);
+  }
+
+  100% {
+    background-color: $on-color;
+  }
+}
+
 body {
+  background-image: url("https://dl.dropboxusercontent.com/u/4223104/DNA_com_GGN.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
   background-color: $main-bg-color;
   font-family: $vt323;
+  padding-top: 10px;
 }
 
 .gameboard {
@@ -15,9 +29,13 @@ body {
 }
 
 .container {
+  opacity: 1;
+  padding: 30px 0;
   text-align: center;
-  margin-top: 10vh;
+  margin-top: 5vh;
   background-color: $container-bg;
+  width: 50vw;
+  border-radius: 5px;
 }
 
 .counter {
@@ -39,8 +57,9 @@ body {
   margin: 0;
 
   &.on {
-    background-color: $on-color;
     opacity: 1;
+    animation: color-flash 0.2s ease-out;
+    background-color: $on-color;
   }
 
   &.off {
@@ -54,6 +73,7 @@ body {
   color: $btn-color;
   font-size: 1.4em;
   padding: 10px;
+  border-radius: 1px;
 
   &:hover {
     background-color: $btn-hover-color;
