@@ -23,7 +23,6 @@ const config = {
             'node_modules/bootstrap/dist/css/bootstrap.min.css.map',
             'node_modules/bootstrap/dist/css/bootstrap-theme.min.css',
             'node_modules/bootstrap/dist/css/bootstrap-theme.min.css.map',
-            'node_modules/codemirror/lib/codemirror.css'
         ],
         dist: './dist',
         images: './src/images/*',

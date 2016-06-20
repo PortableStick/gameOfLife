@@ -20,7 +20,7 @@ class App extends Component {
     isRunning = false;
     boardView = [];
 
-    lifeCycle() {
+    willLiveNextCycle() {
       let board = this.state.board,
           copyOfBoard = [],
           height = this.state.height,
@@ -41,12 +41,12 @@ class App extends Component {
               neighbors = [neighborLeft, neighborRight, neighborUp, neighborDown, neighborTopLeft, neighborTopRight, neighborBottomLeft, neighborBottomRight],
               neighborCount = 0;
 
-          for(let k = 0; k < 8; k++) {
-            let neighbor = neighbors[k];
-            if(neighbor && neighbor.activestate === "on") {
-              neighborCount++;
-            }
-          }
+              neighbors.forEach(neighbor => {
+                if(neighbor && neighbor.activestate === "on") {
+                  neighborCount++;
+                }
+              });
+
           let newSquare = {x: currentSquare.x, y: currentSquare.y, activestate:""};
 
           if(neighborCount === 3 && currentSquare.activestate === "off") {
@@ -97,7 +97,7 @@ class App extends Component {
         board: this.randomizeCells(),
         generation: 0
       });
-      this.interval = setInterval(this.lifeCycle.bind(this), this.state.gamespeed);
+      this.interval = setInterval(this.willLiveNextCycle.bind(this), this.state.gamespeed);
       this.isRunning = true;
     }
 
@@ -135,7 +135,7 @@ class App extends Component {
         this.isRunning = false;
         this.forceUpdate();
       } else {
-        this.interval = setInterval(this.lifeCycle.bind(this), this.state.gamespeed);
+        this.interval = setInterval(this.willLiveNextCycle.bind(this), this.state.gamespeed);
         this.isRunning = true;
         this.forceUpdate();
       }
@@ -160,7 +160,7 @@ class App extends Component {
       });
       if(this.isRunning) {
         clearInterval(this.interval);
-        this.interval = setInterval(this.lifeCycle.bind(this), this.state.gamespeed);
+        this.interval = setInterval(this.willLiveNextCycle.bind(this), this.state.gamespeed);
       }
     }
 
