@@ -47,7 +47,19 @@ class App extends Component {
                 }
               });
 
-          let newSquare = {x: currentSquare.x, y: currentSquare.y, activestate:""};
+          copyOfBoard[i][j] = this.getNewSquare(currentSquare, neighborCount);
+        } //for-j
+      }//for-i
+      this.setState(previousState => {
+        return {
+          board: copyOfBoard,
+          generation: previousState.generation + 1
+        }
+      });
+    }
+
+    getNewSquare(currentSquare, neighborCount) {
+      let newSquare = {x: currentSquare.x, y: currentSquare.y, activestate:""};
 
           if(neighborCount === 3 && currentSquare.activestate === "off") {
             newSquare.activestate = "on";
@@ -60,15 +72,8 @@ class App extends Component {
           } else {
             newSquare.activestate = currentSquare.activestate;
           }
-          copyOfBoard[i][j] = newSquare;
-        } //for-j
-      }//for-i
-      this.setState(previousState => {
-        return {
-          board: copyOfBoard,
-          generation: previousState.generation + 1
-        }
-      });
+
+          return newSquare;
     }
 
     randomizeCells() {
@@ -182,7 +187,11 @@ class App extends Component {
     render() {
         return (
           <div className = "container">
-            <Controller pause={this.pause.bind(this)} randomize={this.randomize.bind(this)} clear={this.clear.bind(this)} pauseLabel={this.isRunning ? "Pause" : "Start"} generation={this.state.generation}/>
+            <Controller pause={this.pause.bind(this)}
+                        randomize={this.randomize.bind(this)}
+                        clear={this.clear.bind(this)}
+                        pauseLabel={this.isRunning ? "Pause" : "Start"}
+                        generation={this.state.generation}/>
             <div className="gameboard">
               {this.state.board.map(row => {
                 return (<div>
